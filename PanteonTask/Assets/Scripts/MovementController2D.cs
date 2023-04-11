@@ -6,16 +6,13 @@ using UnityEngine.UI;
 
 public class MovementController2D : MonoBehaviour
 {
-    [Header("Navigator options")]
+    
     [SerializeField] float gridSize = 0.5f; //increase patience or gridSize for larger maps
     [SerializeField] float speed = 0.05f; //increase for faster movement
     
     Pathfinder<Vector2> pathfinder; //the pathfinder object that stores the methods and patience
-    [Tooltip("The layers that the navigator can not pass through.")]
     [SerializeField] LayerMask obstacles;
-    [Tooltip("Deactivate to make the navigator move along the grid only, except at the end when it reaches to the target point. This shortens the path but costs extra Physics2D.LineCast")] 
     [SerializeField] bool searchShortcut =false; 
-    [Tooltip("Deactivate to make the navigator to stop at the nearest point on the grid.")]
     [SerializeField] bool snapToGrid =false; 
     Vector2 targetNode; //target in 2D space
     List <Vector2> path;
@@ -25,18 +22,18 @@ public class MovementController2D : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        pathfinder = new Pathfinder<Vector2>(GetDistance,GetNeighbourNodes,1000); //increase patience or gridSize for larger maps
+        pathfinder = new Pathfinder<Vector2>(GetDistance,GetNeighbourNodes,500); 
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(1)) //check for a new target
+        if (Input.GetMouseButtonDown(1)) // Moves the object.
         {
                 GetMoveCommand(Camera.main.ScreenToWorldPoint(Input.mousePosition));
         }
 
-        if (pathLeftToGo.Count > 0) //if the target is not yet reached
+        if (pathLeftToGo.Count > 0) // if the target is not yet reached
         {
             Vector3 dir =  (Vector3)pathLeftToGo[0]-transform.position ;
             transform.position += dir.normalized * speed;
@@ -44,7 +41,7 @@ public class MovementController2D : MonoBehaviour
             {
                 transform.position = pathLeftToGo[0];
                 pathLeftToGo.RemoveAt(0);
-                if (pathLeftToGo.Count == 0)
+                if (pathLeftToGo.Count == 0) // If the path is finished, reset the object to its initial state.
                 {
                     gameObject.GetComponent<BoxCollider2D>().enabled = true;
                     transform.GetChild(0).GetChild(0).GetComponent<Image>().color = new Color(0 / 255f, 0 / 255f, 0 / 255f, 87f / 255);
@@ -65,7 +62,7 @@ public class MovementController2D : MonoBehaviour
     }
 
     
-    void GetMoveCommand(Vector2 target)
+    void GetMoveCommand(Vector2 target) 
     {
         Vector2 closestNode = GetClosestNode(transform.position);
         if (pathfinder.GenerateAstarPath(closestNode, GetClosestNode(target), out path)) //Generate path between two points on grid that are close to the transform position and the assigned target.

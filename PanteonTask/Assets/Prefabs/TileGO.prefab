@@ -103,6 +103,7 @@ MonoBehaviour:
   _offsetColor: {r: 0.8262727, g: 0.8301887, b: 0.8266778, a: 1}
   _renderer: {fileID: 3071292194950151568}
   _highlight: {fileID: 3971346616467734663}
+  isTrigger: 0
 --- !u!61 &2088067000743146809
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -28,7 +28,7 @@ public class UIManager : MonoBehaviour
     }
     public void InstantiateSquareObject(GameObject obj)
     {
-       Instantiate(obj, new Vector3(ObjScale(obj)[0], ObjScale(obj)[1]), Quaternion.identity);
+       Instantiate(obj, new Vector3(ObjScale(obj)[0], ObjScale(obj)[1],-.1f), Quaternion.identity);
     }
     public List<float> ObjScale(GameObject GO)
     {
@@ -105,7 +105,7 @@ public class UIManager : MonoBehaviour
     {
         for (int i = 0; i < soldierBarrack.Count; i++)
         {
-            soldierBarrack[i].transform.GetChild(2).gameObject.SetActive(true);
+            soldierBarrack[i].transform.GetChild(1).gameObject.SetActive(true);
             soldierBarrack[i].transform.GetComponent<Button>().enabled = false;
         }
     }
@@ -113,7 +113,7 @@ public class UIManager : MonoBehaviour
     {
         for (int i = 0; i < powerPlant.Count; i++)
         {
-            powerPlant[i].transform.GetChild(2).gameObject.SetActive(true);
+            powerPlant[i].transform.GetChild(1).gameObject.SetActive(true);
             powerPlant[i].transform.GetComponent<Button>().enabled = false;
         }
     }

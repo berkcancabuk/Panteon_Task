@@ -20,7 +20,7 @@ public class ObjectTriggerControl : MonoBehaviour
         //_isTrigger = true;
         //if (collision.gameObject.GetComponent<ObjectTriggerControl>()._isTrigger)
         //{
-        if (this.enabled != false && (collision.tag == "Cube" || collision.tag == "Soldier" || collision.tag == "PowerPlant"))
+        if (this.enabled != false && (collision.tag == "Cube" || collision.tag == "Soldier" || collision.tag == "PowerPlant" || collision.tag == "Enemy"))
         {
             isTrigger = true;
             spriteRenderer.color = new Color(212f / 255f, 49f / 255f, 49f / 255f, 120f / 255f);
@@ -33,7 +33,7 @@ public class ObjectTriggerControl : MonoBehaviour
         //    _isTrigger = false;
         //    if (!collision.gameObject.GetComponent<ObjectTriggerControl>()._isTrigger ),
 
-        if (this.enabled != false&& (collision.tag =="Cube" || collision.tag == "Soldier" || collision.tag == "PowerPlant"))
+        if (this.enabled != false&& (collision.tag =="Cube" || collision.tag == "Soldier" || collision.tag == "PowerPlant" || collision.tag == "Enemy"))
         {
             isTrigger = false;
             spriteRenderer.color = _spriteRendererStartColor;

@@ -67,17 +67,23 @@ public class DragObject : MonoBehaviour
     {
         if (dragging)
         {
-            if (gameObject.transform.localScale.y % 2 != 0)
+            if (gameObject.transform.localScale.y == 1 && gameObject.transform.localScale.x == 1)
             {
                 Vector3 curScreenPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y, distance);
                 Vector3 curPosition = Camera.main.ScreenToWorldPoint(curScreenPoint) + offset;
-                transform.position = new Vector3((int)(curPosition.x)+.5f, (int)(curPosition.y), 0);
+                transform.position = new Vector3((int)(curPosition.x), (int)(curPosition.y), -.1f);
+            }
+            else if (gameObject.transform.localScale.y % 2 != 0)
+            {
+                Vector3 curScreenPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y, distance);
+                Vector3 curPosition = Camera.main.ScreenToWorldPoint(curScreenPoint) + offset;
+                transform.position = new Vector3((int)(curPosition.x) + .5f, (int)(curPosition.y), -.1f);
             }
             else
             {
                 Vector3 curScreenPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y, distance);
                 Vector3 curPosition = Camera.main.ScreenToWorldPoint(curScreenPoint) + offset;
-                transform.position = new Vector3((int)(curPosition.x) + .5f, (int)(curPosition.y) + .5f, 0);
+                transform.position = new Vector3((int)(curPosition.x) + .5f, (int)(curPosition.y) + .5f, -.1f);
             }
            
         }

@@ -57,7 +57,6 @@ public class AgentMovement : MonoBehaviour
         {
             Vector3 hitTransform = hit.transform.GetComponent<SpriteRenderer>().bounds.center;
             target = new Vector3(hitTransform.x, hitTransform.y, 0);
-            print("buraya giriyor mu");
 
         }
         SetAgentPosition();
@@ -65,7 +64,6 @@ public class AgentMovement : MonoBehaviour
     void SetAgentPosition()
     {
         agent.SetDestination(target);
-        print(agent.remainingDistance + "path var mý");
     }
 
 }
