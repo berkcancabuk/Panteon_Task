@@ -9,7 +9,6 @@ public class UIManager : MonoBehaviour
 {
     public static UIManager instance = null;
     public Information Information;
-    public SoldierSpawnPoint soldierSpawnPoint;
     public GameObject prefabSoldier1, prefabSoldier2, prefabSoldier3;
     private List<float> objectPos = new List<float>();
     public TextMeshProUGUI energyValue;

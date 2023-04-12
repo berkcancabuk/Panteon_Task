@@ -10616,7 +10616,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.02610904, y: 0.0922963}
   m_AnchorMax: {x: 0.9691091, y: 0.3018148}
-  m_AnchoredPosition: {x: -3.582489, y: 3}
+  m_AnchoredPosition: {x: -3.5824585, y: 3}
   m_SizeDelta: {x: -7.1700134, y: 4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &249966843
@@ -48760,7 +48760,6 @@ MonoBehaviour:
   Information:
     name: {fileID: 554963328}
     image: {fileID: 379364669}
-  soldierSpawnPoint: {fileID: 315144029}
   prefabSoldier1: {fileID: 8560524306406171561, guid: de6700c5ebebeba4b9fab623784da499, type: 3}
   prefabSoldier2: {fileID: 6145278610322184389, guid: c180fb2dcef16d74c97f829e31f1f642, type: 3}
   prefabSoldier3: {fileID: 237799968006935550, guid: bd86153a97c2f5340a2629684e904a42, type: 3}
