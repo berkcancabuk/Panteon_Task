@@ -18,20 +18,12 @@ public class Tile : MonoBehaviour
     {
         _renderer.color = isOffset ? _offsetColor : _baseColor;
     }
-    private void OnMouseEnter()
+    private void OnTriggerExit2D(Collider2D collision)
     {
-        _highlight.SetActive(true);
-    }
-    private void OnMouseExit()
-    {
-        _highlight.SetActive(false);
+        isTrigger = false;
     }
     private void OnTriggerStay2D(Collider2D collision)
     {
         isTrigger = true;
-    }
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        isTrigger = false;
     }
 }

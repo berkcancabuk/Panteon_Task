@@ -4,66 +4,48 @@ using UnityEngine;
 public class SoldierObjectClass : MonoBehaviour
 {
     public int soldierHealth;
-    public int soldierPower;
+    public int soldierAttack;
     public int soldierLevel;
     public int soldierCount;
     [SerializeField] private GameObject _enemy;
-    [SerializeField] SoldierSpawnPoint soldierSpawn;
-    private GameManager gameManager;
-    private bool isFight;
-    private void Awake()
-    {
-        soldierSpawn = SoldierSpawnPoint.instance;
-        gameManager = GameManager.instance;
-    }
+    bool _isExitTrigger = false;
     private void Update()
     {
-       
+        if (soldierHealth <= 0)
+        {
+            Destroy(gameObject);
+        }
     }
+    /// <summary>
+    /// IEnumerator that enables the soldier to attack the enemy every 3 seconds.
+    /// </summary>
+    /// <returns></returns>
     public IEnumerator SoldierAttack()
     {
-            _enemy.GetComponent<EnemyObjectClass>()._enemyHealth -= soldierPower;
-            if (soldierHealth <= 0)
-            {
-                if (gameManager.soldierLevel == 1&&soldierLevel == 1 )
-                {
-                    soldierSpawn.RepeatingLevel1();
-                }
-                else if (gameManager.soldierLevel == 2 && soldierLevel == 2)
-            {
-                    soldierSpawn.RepeatingLevel2();
-                }
-                else if (gameManager.soldierLevel == 3&& soldierLevel == 3)
-            {
-                    soldierSpawn.RepeatingLevel3();
-                }
-                isFight = false;
-                Destroy(gameObject);
-                yield break;
-
-            }
-            yield return new WaitForSeconds(3);
-            StartCoroutine(SoldierAttack());
-        
-        
+        _enemy.GetComponent<EnemyObjectClass>()._enemyHealth -= soldierAttack;
+        if (_isExitTrigger)
+        {
+            yield break;
+        }
+        yield return new WaitForSeconds(3);
+        StartCoroutine(SoldierAttack());
     }
-    
-   
-    private void OnTriggerStay2D(Collider2D collision)
+
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.tag == "Enemy")
         {
-            
-            if (!isFight)
-            {
-                _enemy = collision.transform.gameObject;
-                StartCoroutine(SoldierAttack());
-                isFight = true;
-            }
-            
+            _enemy = collision.transform.gameObject;
+            StartCoroutine(SoldierAttack());
         }
     }
+
     private void OnTriggerExit2D(Collider2D collision)
     {
+        if (collision.tag == "Enemy")
+        {
+            _isExitTrigger = true;
+        }
+        
     }
 }

@@ -5,18 +5,16 @@ using UnityEngine.AI;
 
 public class DragObject : MonoBehaviour
 {
-  
+
     private Vector3 offset;
     private float distance = -5f;
     private bool dragging = false;
     private Vector3 _firstPosition;
     private ObjectTriggerControl _objectTrigger;
-    private NavMeshObstacle _meshObstacle;
     private bool _isStartPositionCheck;
     private void Start()
     {
         _objectTrigger = GetComponent<ObjectTriggerControl>();
-        _meshObstacle = GetComponent<NavMeshObstacle>();
     }
 
     private void OnMouseEnter()
@@ -33,7 +31,6 @@ public class DragObject : MonoBehaviour
         dragging = true;
         offset = transform.position - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, distance));
         _objectTrigger.enabled = true;
-        _meshObstacle.enabled = false;
        
     }
 
@@ -50,15 +47,13 @@ public class DragObject : MonoBehaviour
             }
             _isStartPositionCheck = true;
             dragging = false;
-            _objectTrigger.enabled = false;
-            _meshObstacle.enabled = true;
+            _objectTrigger.enabled = false; 
         }
         else
         {
             _firstPosition = gameObject.transform.position;
             dragging = false;
             _objectTrigger.enabled = false;
-            _meshObstacle.enabled = true;
             _isStartPositionCheck = true;
         }
     }

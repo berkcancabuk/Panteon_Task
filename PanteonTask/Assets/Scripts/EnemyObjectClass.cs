@@ -17,18 +17,17 @@ public class EnemyObjectClass : MonoBehaviour
             EnemySpawner.instance.InstantiateSpawnPoint();
         }
     }
+
+    /// <summary>
+    /// IEnumerator that enables the enemy to attack the soldier every 5 seconds.
+    /// </summary>
+    /// <returns></returns>
     public IEnumerator EnemyAttack()
     {
         if (_soldier != null)
         {
             _soldier.GetComponent<SoldierObjectClass>().soldierHealth -= _enemyAttack;
-            if (_enemyHealth <= 0)
-            {
-                Destroy(gameObject);
-                EnemySpawner.instance.InstantiateSpawnPoint();
-                yield break;
-            }
-            yield return new WaitForSeconds(3);
+            yield return new WaitForSeconds(5);
             StartCoroutine(EnemyAttack());
         }
         else
@@ -37,12 +36,9 @@ public class EnemyObjectClass : MonoBehaviour
             {
                 collisionGO.RemoveAt(0);
             }
-            
             if (collisionGO.Count >= 1)
             {
-               
                 _soldier = collisionGO[0];
-                _isEnemyFight = false;
                 StartCoroutine(EnemyAttack());
             }
             else
@@ -50,31 +46,20 @@ public class EnemyObjectClass : MonoBehaviour
                 _isEnemyFight = false;
                 yield break;
             }
-            
         }
-        
     }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.tag == "Soldier")
         {
             collisionGO.Add(collision.gameObject);
-            print("çarpýþma kontorl " + collision.name);
-            if (!_isEnemyFight || collisionGO.Count == 1)
+            if (!_isEnemyFight)
             {
                 _soldier = collisionGO[0];
                 _isEnemyFight = true;
                 StartCoroutine(EnemyAttack());
             }
         }
-        
-    }
-    private void OnTriggerStay2D(Collider2D collision)
-    {
-       
-    }
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        CancelInvoke("EnemyAttack");
     }
 }

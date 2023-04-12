@@ -14,27 +14,17 @@ public class ScrollControl : MonoBehaviour
     private bool _isDown;
     [SerializeField] private List<RectTransform> contenChildtList = new List<RectTransform>();
 
-    private void Start()
-    {
-        
-    }
-    private void Update()
-    {
-
-    }
-
     public void Scroll()
     {
         ScrollController();
     }
-    public void FirstPlaceEntered(int leftBoxId,int rightBoxId,bool isUpOrDown)
+    public void FirstPlaceEntered(int leftBoxId, int rightBoxId, bool isUpOrDown)
     {
-       
-            this.leftBoxId = leftBoxId;
-            this.rightBoxId = rightBoxId;
-            _isUpOrDown = isUpOrDown;
+        this.leftBoxId = leftBoxId;
+        this.rightBoxId = rightBoxId;
+        _isUpOrDown = isUpOrDown;
     }
-    public void ChangeContentChildPos(int LeftBoxGO, int RightBoxGO,int distanceY)
+    public void ChangeContentChildPos(int LeftBoxGO, int RightBoxGO, int distanceY)
     {
         contenChildtList[LeftBoxGO].anchoredPosition += new Vector2(0, distanceY);
         contenChildtList[RightBoxGO].anchoredPosition += new Vector2(0, distanceY);
@@ -46,7 +36,7 @@ public class ScrollControl : MonoBehaviour
             _isUp = true;
             if (_isDown)
             {
-                if (leftBoxId == contenChildtList.Count-2)
+                if (leftBoxId == contenChildtList.Count - 2)
                 {
                     leftBoxId = 0;
                     rightBoxId = 1;

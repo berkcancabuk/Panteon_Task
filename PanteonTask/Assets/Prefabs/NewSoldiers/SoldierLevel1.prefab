@@ -225,11 +225,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   soldierHealth: 10
-  soldierPower: 2
+  soldierAttack: 2
   soldierLevel: 1
   soldierCount: 1
   _enemy: {fileID: 0}
-  soldierSpawn: {fileID: 0}
 --- !u!114 &8998204905192165455
 MonoBehaviour:
   m_ObjectHideFlags: 0

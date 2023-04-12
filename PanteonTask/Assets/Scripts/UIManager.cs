@@ -3,43 +3,49 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class UIManager : MonoBehaviour
 {
-    public static UIManager instance=null;
+    public static UIManager instance = null;
     public Information Information;
+    public SoldierSpawnPoint soldierSpawnPoint;
+    public GameObject prefabSoldier1, prefabSoldier2, prefabSoldier3;
     private List<float> objectPos = new List<float>();
     public TextMeshProUGUI energyValue;
-    public List<Buildings> buildings = new List<Buildings>();
-    public List<Soldiers> soldiers = new List<Soldiers>();
-    public List<GameObject> soldierBarrack = new List<GameObject>();
+    public List<Buildings> buildings = new();
+    public List<Soldiers> soldiers = new ();
+    public List<GameObject> barrackList = new();
     public List<GameObject> powerPlant = new List<GameObject>();
     private void Awake()
     {
         if (instance != null)
         {
             Destroy(this);
-            
         }
         else
         {
             instance = this;
         }
     }
-    public void InstantiateSquareObject(GameObject obj)
+
+    public void InstantiateObject(GameObject obj)
     {
-       Instantiate(obj, new Vector3(ObjScale(obj)[0], ObjScale(obj)[1],-.1f), Quaternion.identity);
+        var generateObject = GenerateBasedOnObjectSize(obj);
+        Instantiate(obj, new Vector3(generateObject[0], generateObject[1], -.1f), Quaternion.identity);
     }
-    public List<float> ObjScale(GameObject GO)
+
+    public List<float> GenerateBasedOnObjectSize(GameObject GO)
     {
         objectPos.Clear();
         if (GO.transform.localScale.x % 2 == 0 && GO.transform.localScale.y % 2 == 0)
         {
             objectPos.Add(3.5f);
             objectPos.Add(4.5f);
+            barrackList.Add(GO);
             return objectPos;
         }
-        else if (GO.transform.localScale.x %2 != 0 && GO.transform.localScale.y % 2 == 0 || GO.transform.localScale.x % 2 == 0 && GO.transform.localScale.y % 2 != 0)
+        else if (GO.transform.localScale.x % 2 != 0 && GO.transform.localScale.y % 2 == 0 || GO.transform.localScale.x % 2 == 0 && GO.transform.localScale.y % 2 != 0)
         {
             objectPos.Add(3.5f);
             objectPos.Add(4f);
@@ -50,7 +56,7 @@ public class UIManager : MonoBehaviour
         objectPos.Add(2f);
 
         return objectPos;
-        
+
     }
     public void UIObjectPanelClose()
     {
@@ -59,16 +65,23 @@ public class UIManager : MonoBehaviour
             buildings[i].UI.SetActive(false);
         }
     }
-    public void OpenSoldierBarrackPanel()
+    public void OpenSoldierBarrackPanel(GameObject GO)
     {
+        var selectedBarrack = GO.GetComponent<SoldierBarrackObjectClass>();
         UIObjectPanelClose();
         Information.image.sprite = buildings[0].image;
         Information.name.text = buildings[0].name;
         buildings[0].UI.SetActive(true);
-        buildings[0].level1Count.text = "Level 1: " + GameManager.instance.ownedSoldiersLevel1;
-        buildings[0].level2Count.text = "Level 2: " + GameManager.instance.ownedSoldiersLevel2;
-        buildings[0].level3Count.text = "Level 3: " + GameManager.instance.ownedSoldiersLevel3;
-        
+        AddListenerButton(selectedBarrack);
+    }
+    public void AddListenerButton(SoldierBarrackObjectClass selectedBarrack)
+    {
+        buildings[0].UI.gameObject.transform.GetChild(3).GetComponent<Button>().onClick.RemoveAllListeners();
+        buildings[0].UI.gameObject.transform.GetChild(4).GetComponent<Button>().onClick.RemoveAllListeners();
+        buildings[0].UI.gameObject.transform.GetChild(5).GetComponent<Button>().onClick.RemoveAllListeners();
+        buildings[0].UI.gameObject.transform.GetChild(3).GetComponent<Button>().onClick.AddListener(() => selectedBarrack.InstantiateSpawnPoint(prefabSoldier1));
+        buildings[0].UI.gameObject.transform.GetChild(4).GetComponent<Button>().onClick.AddListener(() => selectedBarrack.InstantiateSpawnPoint(prefabSoldier2));
+        buildings[0].UI.gameObject.transform.GetChild(5).GetComponent<Button>().onClick.AddListener(() => selectedBarrack.InstantiateSpawnPoint(prefabSoldier3));
     }
     public void OpenPowerPlantPanel()
     {
@@ -83,12 +96,10 @@ public class UIManager : MonoBehaviour
         Information.image.sprite = buildings[2].image;
         Information.name.text = buildings[2].name;
         buildings[2].UI.SetActive(true);
-
-        print(GO.name);
-        soldiers[GO.GetComponent<SoldierObjectClass>().soldierLevel - 1].soldiersLevel.text = "Soldiers Level: "+GO.GetComponent<SoldierObjectClass>().soldierLevel;
+        soldiers[GO.GetComponent<SoldierObjectClass>().soldierLevel - 1].soldiersLevel.text = "Soldiers Level: " + GO.GetComponent<SoldierObjectClass>().soldierLevel;
         soldiers[GO.GetComponent<SoldierObjectClass>().soldierLevel - 1].soldiersCount.text = "Soldiers Count: " + GO.GetComponent<SoldierObjectClass>().soldierCount;
         soldiers[GO.GetComponent<SoldierObjectClass>().soldierLevel - 1].soldiersHealth.text = "Soldiers Health: " + GO.GetComponent<SoldierObjectClass>().soldierHealth;
-        soldiers[GO.GetComponent<SoldierObjectClass>().soldierLevel - 1].soldiersAttack.text = "Soldiers Attack: " + GO.GetComponent<SoldierObjectClass>().soldierPower;
+        soldiers[GO.GetComponent<SoldierObjectClass>().soldierLevel - 1].soldiersAttack.text = "Soldiers Attack: " + GO.GetComponent<SoldierObjectClass>().soldierAttack;
 
     }
     public void OpenEnemyPanel(GameObject GO)
@@ -97,28 +108,11 @@ public class UIManager : MonoBehaviour
         Information.image.sprite = buildings[3].image;
         Information.name.text = buildings[3].name;
         buildings[3].UI.SetActive(true);
-        buildings[3].level1Count.text = "Health : "+GO.GetComponent<EnemyObjectClass>()._enemyHealth;
-        buildings[3].level2Count.text = "Power : "+GO.GetComponent<EnemyObjectClass>()._enemyAttack;
+        buildings[3].level1Count.text = "Health : " + GO.GetComponent<EnemyObjectClass>()._enemyHealth;
+        buildings[3].level2Count.text = "Power : " + GO.GetComponent<EnemyObjectClass>()._enemyAttack;
     }
-
-    public void BoughtSoldierBarrack()
-    {
-        for (int i = 0; i < soldierBarrack.Count; i++)
-        {
-            soldierBarrack[i].transform.GetChild(1).gameObject.SetActive(true);
-            soldierBarrack[i].transform.GetComponent<Button>().enabled = false;
-        }
-    }
-    public void BoughtPowerPlant()
-    {
-        for (int i = 0; i < powerPlant.Count; i++)
-        {
-            powerPlant[i].transform.GetChild(1).gameObject.SetActive(true);
-            powerPlant[i].transform.GetComponent<Button>().enabled = false;
-        }
-    }
-    
 }
+
 [System.Serializable]
 public class Information
 {

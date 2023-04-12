@@ -7,46 +7,55 @@ using UnityEngine.UI;
 public class MovementController2D : MonoBehaviour
 {
     
-    [SerializeField] float gridSize = 0.5f; //increase patience or gridSize for larger maps
-    [SerializeField] float speed = 0.05f; //increase for faster movement
+    [SerializeField] float gridSize = 0.5f;
+    [SerializeField] float speed = 0.05f;
     
-    Pathfinder<Vector2> pathfinder; //the pathfinder object that stores the methods and patience
+    Pathfinder<Vector2> pathfinder;
     [SerializeField] LayerMask obstacles;
     [SerializeField] bool searchShortcut =false; 
     [SerializeField] bool snapToGrid =false; 
-    Vector2 targetNode; //target in 2D space
+    Vector2 targetNode; 
     List <Vector2> path;
     List<Vector2> pathLeftToGo= new List<Vector2>();
     [SerializeField] bool drawDebugLines;
 
-    // Start is called before the first frame update
+    
     void Start()
     {
         pathfinder = new Pathfinder<Vector2>(GetDistance,GetNeighbourNodes,500); 
     }
 
-    // Update is called once per frame
+   
     void Update()
     {
-        if (Input.GetMouseButtonDown(1)) // Moves the object.
+        if (Input.GetMouseButtonDown(1))
         {
                 GetMoveCommand(Camera.main.ScreenToWorldPoint(Input.mousePosition));
         }
 
-        if (pathLeftToGo.Count > 0) // if the target is not yet reached
+        if (pathLeftToGo.Count > 0) 
         {
+            GameManager.instance.isMoveSoldier = true;
+            GameManager.instance.soldierInstLevel1.enabled = false;
+            GameManager.instance.soldierInstLevel2.enabled = false;
+            GameManager.instance.soldierInstLevel3.enabled = false;
             Vector3 dir =  (Vector3)pathLeftToGo[0]-transform.position ;
             transform.position += dir.normalized * speed;
             if (((Vector2)transform.position - pathLeftToGo[0]).sqrMagnitude <speed*speed) 
             {
                 transform.position = pathLeftToGo[0];
                 pathLeftToGo.RemoveAt(0);
-                if (pathLeftToGo.Count == 0) // If the path is finished, reset the object to its initial state.
+                if (pathLeftToGo.Count == 0) 
                 {
+                    transform.position = new Vector3(transform.position.x, transform.position.y, -0.1f);
                     gameObject.GetComponent<BoxCollider2D>().enabled = true;
                     transform.GetChild(0).GetChild(0).GetComponent<Image>().color = new Color(0 / 255f, 0 / 255f, 0 / 255f, 87f / 255);
                     GameManager.instance.clickLastGO = null;
                     GameManager.instance.TileColliderOn();
+                    GameManager.instance.isMoveSoldier = false;
+                    GameManager.instance.soldierInstLevel1.enabled = true;
+                    GameManager.instance.soldierInstLevel2.enabled = true;
+                    GameManager.instance.soldierInstLevel3.enabled = true;
 
                 }
             }
@@ -54,18 +63,17 @@ public class MovementController2D : MonoBehaviour
 
         if (drawDebugLines)
         {
-            for (int i=0;i<pathLeftToGo.Count-1;i++) //visualize your path in the sceneview
+            for (int i=0;i<pathLeftToGo.Count-1;i++)
             {
                 Debug.DrawLine(pathLeftToGo[i], pathLeftToGo[i+1]);
             }
         }
     }
 
-    
     void GetMoveCommand(Vector2 target) 
     {
         Vector2 closestNode = GetClosestNode(transform.position);
-        if (pathfinder.GenerateAstarPath(closestNode, GetClosestNode(target), out path)) //Generate path between two points on grid that are close to the transform position and the assigned target.
+        if (pathfinder.GenerateAstarPath(closestNode, GetClosestNode(target), out path))
         {
             if (searchShortcut && path.Count>0)
                 pathLeftToGo = ShortenPath(path);
@@ -78,7 +86,6 @@ public class MovementController2D : MonoBehaviour
         }
         
     }
-
 
     /// <summary>
     /// Finds closest point on the grid
@@ -98,7 +105,7 @@ public class MovementController2D : MonoBehaviour
     /// <returns></returns>
     float GetDistance(Vector2 A, Vector2 B) 
     {
-        return (A - B).sqrMagnitude; //Uses square magnitude to lessen the CPU time.
+        return (A - B).sqrMagnitude; 
     }
 
     /// <summary>

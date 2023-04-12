@@ -250,9 +250,7 @@ GameObject:
   - component: {fileID: 1599018595992691155}
   - component: {fileID: 1773534016702830229}
   - component: {fileID: 6957895852593309386}
-  - component: {fileID: 1773534016702830228}
-  - component: {fileID: 1773534016702830231}
-  - component: {fileID: 8919749793565950062}
+  - component: {fileID: 2618788093891630769}
   m_Layer: 0
   m_Name: SoldierBarrack
   m_TagString: Cube
@@ -268,7 +266,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7393682400208712487}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3, y: 4, z: -0.1}
+  m_LocalPosition: {x: 3, y: 4, z: 0}
   m_LocalScale: {x: 4, y: 4, z: 3}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -353,7 +351,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.98, y: 0.98}
   m_EdgeRadius: 0
 --- !u!114 &1599018595992691155
 MonoBehaviour:
@@ -403,23 +401,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 7
---- !u!208 &1773534016702830228
-NavMeshObstacle:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7393682400208712487}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Shape: 1
-  m_Extents: {x: 0.55, y: 0.55, z: 0.1}
-  m_MoveThreshold: 0.1
-  m_Carve: 1
-  m_CarveOnlyStationary: 1
-  m_Center: {x: 0, y: 0, z: 0}
-  m_TimeToStationary: 0.5
---- !u!114 &1773534016702830231
+--- !u!114 &2618788093891630769
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -428,29 +410,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 7393682400208712487}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9809bf1345abc5648af68b3a82653f08, type: 3}
+  m_Script: {fileID: 11500000, guid: 796c94bf63007874bbd7c55197cc3144, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_OverrideArea: 1
-  m_Area: 1
-  m_IgnoreFromBuild: 0
-  m_AffectedAgents: ffffffff
---- !u!114 &8919749793565950062
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7393682400208712487}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3fb220c829b8db448932e22309e8c5bc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spawnObjectLevel1: {fileID: 8560524306406171561, guid: de6700c5ebebeba4b9fab623784da499, type: 3}
-  spawnObjectLevel2: {fileID: 6145278610322184389, guid: c180fb2dcef16d74c97f829e31f1f642, type: 3}
-  spawnObjectLevel3: {fileID: 237799968006935550, guid: bd86153a97c2f5340a2629684e904a42, type: 3}
-  soldierObjectClass: {fileID: 0}
+  index: 0
+  soldiers: []
 --- !u!1 &9215460705664626943
 GameObject:
   m_ObjectHideFlags: 0

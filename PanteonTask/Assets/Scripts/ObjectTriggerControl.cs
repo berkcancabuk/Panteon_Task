@@ -1,43 +1,37 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Assets.Scripts.Factory;
 public class ObjectTriggerControl : MonoBehaviour
 {
-    [SerializeField] public SpriteRenderer spriteRenderer;
-    [SerializeField] public Color _spriteRendererStartColor;
-
-    [SerializeField] public bool isTrigger;
+    public SpriteRenderer spriteRenderer;
+    public Color _spriteRendererStartColor;
+    public bool isTrigger;
 
     private void Start()
     {
-        //_isTrigger = false;
         spriteRenderer = GetComponent<SpriteRenderer>();
         _spriteRendererStartColor = spriteRenderer.color;
     }
     private void OnTriggerStay2D(Collider2D collision)
     {
-        //_isTrigger = true;
-        //if (collision.gameObject.GetComponent<ObjectTriggerControl>()._isTrigger)
-        //{
-        if (this.enabled != false && (collision.tag == "Cube" || collision.tag == "Soldier" || collision.tag == "PowerPlant" || collision.tag == "Enemy"))
+        if (ShouldTrigger(collision))
         {
             isTrigger = true;
-            spriteRenderer.color = new Color(212f / 255f, 49f / 255f, 49f / 255f, 120f / 255f);
+            spriteRenderer.color = ColorFactory.GetColor(ColorType.OnCollision);
         }
-            
-       // }
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        //    _isTrigger = false;
-        //    if (!collision.gameObject.GetComponent<ObjectTriggerControl>()._isTrigger ),
-
-        if (this.enabled != false&& (collision.tag =="Cube" || collision.tag == "Soldier" || collision.tag == "PowerPlant" || collision.tag == "Enemy"))
+        if (ShouldTrigger(collision))
         {
             isTrigger = false;
             spriteRenderer.color = _spriteRendererStartColor;
         }
+    }
+    private bool ShouldTrigger(Collider2D collision)
+    {
+        return collision.tag == "Cube" || collision.tag == "Soldier" || collision.tag == "PowerPlant" || collision.tag == "Enemy";
     }
 }
 
