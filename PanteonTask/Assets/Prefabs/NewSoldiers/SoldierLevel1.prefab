@@ -242,7 +242,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gridSize: 1
-  speed: 0.02
+  speed: 0.002
   obstacles:
     serializedVersion: 2
     m_Bits: 4294967295
